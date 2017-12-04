@@ -12,9 +12,9 @@ namespace ServiceNetCore
         private readonly object _lock;
         private readonly IServiceProvider _provider;
         private readonly AutoResetEvent _resetEvent;
-        private readonly IList<Worker> _workers;
 
         private bool _stopped;
+        private IList<Worker> _workers;
 
         internal Service(IServiceProvider provider)
         {
@@ -22,7 +22,7 @@ namespace ServiceNetCore
             _provider = provider;
             _resetEvent = new AutoResetEvent(false);
 
-            _workers = InitWorkers();
+            InitWorkers();
         }
 
         public void Run()
@@ -96,12 +96,12 @@ namespace ServiceNetCore
             _resetEvent.Dispose();
         }
 
-        private IList<Worker> InitWorkers()
+        private void InitWorkers()
         {
             var workers = _provider.GetService<IEnumerable<Worker>>();
             var configuration = _provider.GetService<IConfiguration>();
 
-            return workers.Where(w =>
+            _workers = workers.Where(w =>
                 {
                     var name = w.GetType().Name;
 
@@ -114,9 +114,7 @@ namespace ServiceNetCore
 
         public static IServiceBuilder CreateDefaultBuilder(string[] args)
         {
-            return new ServiceBuilder()
-                .AddConfiguration()
-                .AddWorkers();
+            return new ServiceBuilder();
         }
     }
 }

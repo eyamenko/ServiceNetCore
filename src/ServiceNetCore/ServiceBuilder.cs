@@ -10,9 +10,12 @@ namespace ServiceNetCore
     {
         private readonly ServiceCollection _services;
 
-        public ServiceBuilder()
+        internal ServiceBuilder()
         {
             _services = new ServiceCollection();
+
+            AddWorkers();
+            AddConfiguration();
         }
 
         public IServiceBuilder UseStartup<TStartup>() where TStartup : IStartup
@@ -34,7 +37,7 @@ namespace ServiceNetCore
             return new Service(provider);
         }
 
-        public ServiceBuilder AddConfiguration()
+        private void AddConfiguration()
         {
             var environment = Environment.GetEnvironmentVariable("SERVICENETCORE_ENVIRONMENT") ?? "Development";
 
@@ -46,11 +49,9 @@ namespace ServiceNetCore
             var configuration = builder.Build();
 
             _services.AddSingleton<IConfiguration>(configuration);
-
-            return this;
         }
 
-        public ServiceBuilder AddWorkers()
+        private void AddWorkers()
         {
             var workerType = typeof(Worker);
             var workers = Assembly.GetEntryAssembly().DefinedTypes.Where(t => workerType.IsAssignableFrom(t));
@@ -59,8 +60,6 @@ namespace ServiceNetCore
             {
                 _services.AddTransient(workerType, worker);
             }
-
-            return this;
         }
     }
 }

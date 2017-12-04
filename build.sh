@@ -1,0 +1,1 @@
+dotnet pack src/ServiceNetCore/ServiceNetCore.csproj /p:Configuration=Release /p:Version=$1 /p:PackageVersion=$1
