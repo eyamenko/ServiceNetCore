@@ -54,7 +54,7 @@ namespace ServiceNetCore
         private void AddWorkers()
         {
             var workerType = typeof(Worker);
-            var workers = Assembly.GetEntryAssembly().DefinedTypes.Where(t => workerType.IsAssignableFrom(t));
+            var workers = Assembly.GetEntryAssembly().DefinedTypes.Where(workerType.IsAssignableFrom);
 
             foreach (var worker in workers)
             {
