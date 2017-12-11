@@ -8,6 +8,8 @@
 
 `Program.cs`
 ```csharp
+using ServiceNetCore;
+
 internal class Program
 {
     private static void Main(string[] args)
@@ -26,6 +28,10 @@ internal class Program
 
 `Startup.cs`
 ```csharp
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using ServiceNetCore;
+
 public class Startup : IStartup
 {
     private readonly IConfiguration _configuration;
@@ -44,6 +50,10 @@ public class Startup : IStartup
 
 `TestWorker.cs`
 ```csharp
+using System;
+using System.Threading;
+using ServiceNetCore;
+
 public class TestWorker : Worker
 {
     public override void Start()
