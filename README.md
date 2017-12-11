@@ -7,37 +7,57 @@
 ### Usage
 
 `Program.cs`
-```
-    internal class Program
+```csharp
+internal class Program
+{
+    private static void Main(string[] args)
     {
-        private static void Main(string[] args)
-        {
-            BuidlService(args).Run();
-        }
-
-        private static IService BuidlService(string[] args)
-        {
-            return Service.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
-        }
+        BuidlService(args).Run();
     }
+
+    private static IService BuidlService(string[] args)
+    {
+        return Service.CreateDefaultBuilder(args)
+            .UseStartup<Startup>()
+            .Build();
+    }
+}
 ```
 
 `Startup.cs`
-```
-    public class Startup : IStartup
+```csharp
+public class Startup : IStartup
+{
+    private readonly IConfiguration _configuration;
+
+    public Startup(IConfiguration configuration)
     {
-        private readonly IConfiguration _configuration;
-
-        public Startup(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
-        public void ConfigureServices(IServiceCollection services)
-        {
-            // Add your dependencies here
-        }
+        _configuration = configuration;
     }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        // Add your dependencies here.
+    }
+}
+```
+
+`TestWorker.cs`
+```csharp
+public class TestWorker : Worker
+{
+    public override void Start()
+    {
+        Console.WriteLine("I'm starting...");
+
+        Thread.Sleep(1000);
+    }
+
+    public override void Stop()
+    {
+        Console.WriteLine("I'm stopping...");
+
+        Thread.Sleep(1000);
+    }
+}
 ```
