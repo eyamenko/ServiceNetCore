@@ -1,4 +1,4 @@
-﻿namespace ServiceNetCore
+﻿namespace ServiceNetCore.Contracts
 {
     public interface IService
     {

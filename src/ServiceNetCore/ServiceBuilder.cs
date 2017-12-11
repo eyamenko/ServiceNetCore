@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ServiceNetCore.Contracts;
 
 namespace ServiceNetCore
 {
@@ -41,6 +42,8 @@ namespace ServiceNetCore
         {
             var environment = Environment.GetEnvironmentVariable("SERVICENETCORE_ENVIRONMENT") ?? "Development";
 
+            Console.WriteLine($"Service environment: {environment}");
+
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", true, true)
                 .AddJsonFile($"appsettings.{environment}.json", true, true)
@@ -54,7 +57,7 @@ namespace ServiceNetCore
         private void AddWorkers()
         {
             var workerType = typeof(Worker);
-            var workers = Assembly.GetEntryAssembly().DefinedTypes.Where(t => workerType.IsAssignableFrom(t));
+            var workers = Assembly.GetEntryAssembly().DefinedTypes.Where(workerType.IsAssignableFrom);
 
             foreach (var worker in workers)
             {
