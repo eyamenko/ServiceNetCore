@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace ServiceNetCore
+namespace ServiceNetCore.Contracts
 {
     public interface IStartup
     {

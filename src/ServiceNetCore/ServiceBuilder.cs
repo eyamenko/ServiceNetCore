@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ServiceNetCore.Contracts;
 
 namespace ServiceNetCore
 {
@@ -40,6 +41,8 @@ namespace ServiceNetCore
         private void AddConfiguration()
         {
             var environment = Environment.GetEnvironmentVariable("SERVICENETCORE_ENVIRONMENT") ?? "Development";
+
+            Console.WriteLine($"Service environment: {environment}");
 
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", true, true)
